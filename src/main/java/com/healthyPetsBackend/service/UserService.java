@@ -1,0 +1,9 @@
+package com.healthyPetsBackend.service;
+
+import com.healthyPetsBackend.model.User;
+
+public interface UserService {
+    User save(User user);
+    User findByEmail(String email);
+    User getById(Long id);
+}
