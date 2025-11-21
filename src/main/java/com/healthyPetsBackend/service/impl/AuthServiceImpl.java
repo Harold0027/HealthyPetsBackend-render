@@ -9,6 +9,8 @@ import com.healthyPetsBackend.security.jwt.JwtProvider;
 import com.healthyPetsBackend.service.AuthService;
 import com.healthyPetsBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,20 +26,27 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtProvider jwtProvider;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Override
     public AuthResponse login(LoginRequest request) {
 
+        // 1. Autenticar en Spring Security
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        // 2. Obtener usuario real desde la BD
         User user = userService.findByEmail(request.getEmail());
-        if (user == null) {
-            throw new RuntimeException("Email incorrecto");
-        }
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Contraseña incorrecta");
-        }
-
+        // 3. Generar token correcto
         String token = jwtProvider.generateToken(user);
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+
+        return new AuthResponse(token, user.getEmail(), "ROLE_" + user.getRole().name());
     }
 
     @Override
@@ -51,13 +60,12 @@ public class AuthServiceImpl implements AuthService {
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        // Asigna rol por defecto
         user.setRole(Role.USER);
 
-        userService.save(user);
+        userService.saveUser(user);
 
         String token = jwtProvider.generateToken(user);
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+
+        return new AuthResponse(token, user.getEmail(), "ROLE_" + user.getRole().name());
     }
 }

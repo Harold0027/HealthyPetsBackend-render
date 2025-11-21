@@ -13,6 +13,8 @@ public class User {
     private Long id;
 
     private String fullName;
+    private String telefono;
+    private String direccion;
 
     @Column(unique = true)
     private String email;
@@ -20,5 +22,6 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;  // ← USA EL ENUM EXTERNO
+    private Role role;
 }
+

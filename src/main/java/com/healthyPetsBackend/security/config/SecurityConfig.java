@@ -25,14 +25,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()   // 🔥 LOGIN Y REGISTRO SIN TOKEN
-                        .requestMatchers("/error").permitAll()     // evita 403 por error page
-                        .anyRequest().authenticated()              // TODO lo demás requiere token
-                )
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/users/**").permitAll() 
+                .anyRequest().authenticated()
+        )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        // Filtro JWT antes del filtro de login
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
