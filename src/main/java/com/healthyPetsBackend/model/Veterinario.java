@@ -1,13 +1,11 @@
 package com.healthyPetsBackend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "veterinarios")
 public class Veterinario {
 
     @Id
@@ -15,9 +13,13 @@ public class Veterinario {
     private Long id;
 
     private String nombre;
-    private String apellido;
+
     private String especialidad;
-    private String telefono;
+
+    @Column(unique = true)
     private String correo;
-    private boolean estado = true;
+
+    private String telefono;
+
+    private String direccion;
 }

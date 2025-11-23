@@ -1,40 +1,39 @@
 package com.healthyPetsBackend.controller;
 
-import com.healthyPetsBackend.dto.HorarioCreateDTO;
-import com.healthyPetsBackend.dto.HorarioResponseDTO;
-import com.healthyPetsBackend.dto.HorarioUpdateDTO;
-import com.healthyPetsBackend.service.HorarioService;
-
+import com.healthyPetsBackend.dto.PacienteCreateDTO;
+import com.healthyPetsBackend.dto.PacienteResponseDTO;
+import com.healthyPetsBackend.dto.PacienteUpdateDTO;
+import com.healthyPetsBackend.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/horarios")
+@RequestMapping("/pacientes")
 @CrossOrigin(origins = "*")
-public class HorarioController {
+public class PacienteController {
 
     @Autowired
-    private HorarioService service;
+    private PacienteService service;
 
     @GetMapping
-    public List<HorarioResponseDTO> getAll() {
+    public List<PacienteResponseDTO> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public HorarioResponseDTO getById(@PathVariable Long id) {
+    public PacienteResponseDTO getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @PostMapping
-    public HorarioResponseDTO create(@RequestBody HorarioCreateDTO dto) {
+    public PacienteResponseDTO create(@RequestBody PacienteCreateDTO dto) {
         return service.create(dto);
     }
 
     @PutMapping("/{id}")
-    public HorarioResponseDTO update(@PathVariable Long id, @RequestBody HorarioUpdateDTO dto) {
+    public PacienteResponseDTO update(@PathVariable Long id, @RequestBody PacienteUpdateDTO dto) {
         return service.update(id, dto);
     }
 

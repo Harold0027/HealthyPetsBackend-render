@@ -104,9 +104,7 @@ public class UserServiceImpl implements UserService {
         return repo.save(user);
     }
 
-    // =========================
-    //   MAPPER
-    // =========================
+
     private UserResponseDTO mapToDTO(User user) {
         UserResponseDTO dto = new UserResponseDTO();
 
@@ -119,4 +117,10 @@ public class UserServiceImpl implements UserService {
 
         return dto;
     }
+
+    @Override
+    public User findEntityById(Long id) {
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
 }

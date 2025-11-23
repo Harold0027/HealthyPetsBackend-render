@@ -1,28 +1,26 @@
 package com.healthyPetsBackend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalTime; 
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "horarios")
 public class Horario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate fecha;
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id", nullable = false)
+    private Veterinario veterinario;
+
+    private String dia;
 
     private LocalTime horaInicio;
-    private LocalTime horaFin;
 
-    @ManyToOne
-    @JoinColumn(name = "veterinario_id")
-    private Veterinario veterinario;
+    private LocalTime horaFin;
 }

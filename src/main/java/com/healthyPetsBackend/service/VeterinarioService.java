@@ -1,13 +1,24 @@
 package com.healthyPetsBackend.service;
 
-import java.util.List;
-
+import com.healthyPetsBackend.dto.VeterinarioCreateDTO;
+import com.healthyPetsBackend.dto.VeterinarioResponseDTO;
+import com.healthyPetsBackend.dto.VeterinarioUpdateDTO;
 import com.healthyPetsBackend.model.Veterinario;
 
+import java.util.List;
+
 public interface VeterinarioService {
-    List<Veterinario> getAll();
-    Veterinario getById(Long id);
-    Veterinario create(Veterinario veterinario);
-    Veterinario update(Long id, Veterinario veterinario);
+
+    VeterinarioResponseDTO create(VeterinarioCreateDTO dto);
+
+    List<VeterinarioResponseDTO> getAll();
+
+    VeterinarioResponseDTO getById(Long id);
+
+    VeterinarioResponseDTO update(Long id, VeterinarioUpdateDTO dto);
+
     void delete(Long id);
+
+    Veterinario findEntityById(Long id);
+
 }

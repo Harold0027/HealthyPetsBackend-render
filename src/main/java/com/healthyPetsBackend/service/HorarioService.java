@@ -1,13 +1,27 @@
 package com.healthyPetsBackend.service;
 
-import java.util.List;
-
+import com.healthyPetsBackend.dto.HorarioCreateDTO;
+import com.healthyPetsBackend.dto.HorarioResponseDTO;
+import com.healthyPetsBackend.dto.HorarioUpdateDTO;
 import com.healthyPetsBackend.model.Horario;
 
+import java.util.List;
+
 public interface HorarioService {
-    List<Horario> getAll();
-    Horario getById(Long id);
-    Horario create(Horario horario);
-    Horario update(Long id, Horario horario);
+
+    HorarioResponseDTO create(HorarioCreateDTO dto);
+
+    List<HorarioResponseDTO> getAll();
+
+    HorarioResponseDTO getById(Long id);
+
+    HorarioResponseDTO update(Long id, HorarioUpdateDTO dto);
+
     void delete(Long id);
+
+    Horario findById(Long id);
+
+    boolean isAvailable(Long veterinarioId, String dia, String hora);
+
+    List<Horario> findByVeterinarioId(Long veterinarioId);
 }

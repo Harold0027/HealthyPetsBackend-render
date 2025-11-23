@@ -1,45 +1,44 @@
 package com.healthyPetsBackend.controller;
 
-import org.springframework.web.bind.annotation.*;
-
-import com.healthyPetsBackend.model.Veterinario;
+import com.healthyPetsBackend.dto.VeterinarioCreateDTO;
+import com.healthyPetsBackend.dto.VeterinarioResponseDTO;
+import com.healthyPetsBackend.dto.VeterinarioUpdateDTO;
 import com.healthyPetsBackend.service.VeterinarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/veterinarios")
-@CrossOrigin("*")
+@RequestMapping("/veterinarios")
+@CrossOrigin(origins = "*")
 public class VeterinarioController {
 
-    private final VeterinarioService service;
-
-    public VeterinarioController(VeterinarioService service) {
-        this.service = service;
-    }
+    @Autowired
+    private VeterinarioService veterinarioService;
 
     @GetMapping
-    public List<Veterinario> getAll() {
-        return service.getAll();
+    public List<VeterinarioResponseDTO> getAll() {
+        return veterinarioService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Veterinario getById(@PathVariable Long id) {
-        return service.getById(id);
+    public VeterinarioResponseDTO getById(@PathVariable Long id) {
+        return veterinarioService.getById(id);
     }
 
     @PostMapping
-    public Veterinario create(@RequestBody Veterinario veterinario) {
-        return service.create(veterinario);
+    public VeterinarioResponseDTO create(@RequestBody VeterinarioCreateDTO dto) {
+        return veterinarioService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Veterinario update(@PathVariable Long id, @RequestBody Veterinario veterinario) {
-        return service.update(id, veterinario);
+    public VeterinarioResponseDTO update(@PathVariable Long id, @RequestBody VeterinarioUpdateDTO dto) {
+        return veterinarioService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        veterinarioService.delete(id);
     }
 }

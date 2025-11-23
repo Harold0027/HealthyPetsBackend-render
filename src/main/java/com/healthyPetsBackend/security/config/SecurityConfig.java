@@ -28,6 +28,10 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/users/**").permitAll() 
+                .requestMatchers("/veterinarios/**").permitAll() 
+                .requestMatchers("/pacientes/**").permitAll() 
+                .requestMatchers("/horarios/**").permitAll() 
+                .requestMatchers("/citas/**").permitAll() 
                 .anyRequest().authenticated()
         )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
