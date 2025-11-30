@@ -13,6 +13,6 @@ public interface PacienteService {
     PacienteResponseDTO getById(Long id);
     PacienteResponseDTO update(Long id, PacienteUpdateDTO dto);
     void delete(Long id);
-    Paciente findById(Long id);
-    Paciente findEntityById(Long id);
+    Paciente findById(Long id);       // retorna null si no existe
+    Paciente findEntityById(Long id); // retorna entidad o lanza excepción
 }

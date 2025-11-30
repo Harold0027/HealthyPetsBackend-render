@@ -26,14 +26,17 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public PacienteResponseDTO create(PacienteCreateDTO dto) {
 
-        UserResponseDTO dueñoDTO = userService.getById(dto.getDueñoId());
-        if (dueñoDTO == null) throw new RuntimeException("Dueño no encontrado");
+        UserResponseDTO duenoDTO = userService.getById(dto.getDuenoId());
+        if (duenoDTO == null)
+            throw new RuntimeException("Dueño no encontrado");
 
         Paciente p = new Paciente();
-        User dueño = new User();
-        dueño.setId(dueñoDTO.getId());
-        dueño.setFullName(dueñoDTO.getFullName());
-        p.setDueño(dueño);
+
+        User dueno = new User();
+        dueno.setId(duenoDTO.getId());
+        dueno.setFullName(duenoDTO.getFullName());
+
+        p.setDueño(dueno); // la entidad puede seguir llamándose 'dueño'
         p.setNombre(dto.getNombre());
         p.setEspecie(dto.getEspecie());
         p.setRaza(dto.getRaza());
@@ -53,24 +56,23 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     public PacienteResponseDTO getById(Long id) {
-        Paciente p = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+        Paciente p = findEntityById(id);
         return mapToDTO(p);
     }
 
     @Override
     public PacienteResponseDTO update(Long id, PacienteUpdateDTO dto) {
-        Paciente p = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+        Paciente p = findEntityById(id);
 
-        UserResponseDTO dueñoDTO = userService.getById(dto.getDueñoId());
-        if (dueñoDTO == null) throw new RuntimeException("Dueño no encontrado");
+        UserResponseDTO duenoDTO = userService.getById(dto.getDuenoId());
+        if (duenoDTO == null)
+            throw new RuntimeException("Dueño no encontrado");
 
-        User dueño = new User();
-        dueño.setId(dueñoDTO.getId());
-        dueño.setFullName(dueñoDTO.getFullName());
+        User dueno = new User();
+        dueno.setId(duenoDTO.getId());
+        dueno.setFullName(duenoDTO.getFullName());
 
-        p.setDueño(dueño);
+        p.setDueño(dueno);
         p.setNombre(dto.getNombre());
         p.setEspecie(dto.getEspecie());
         p.setRaza(dto.getRaza());
@@ -82,7 +84,9 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     public void delete(Long id) {
-        if (!repo.existsById(id)) throw new RuntimeException("Paciente no encontrado");
+        if (!repo.existsById(id))
+            throw new RuntimeException("Paciente no encontrado");
+
         repo.deleteById(id);
     }
 
@@ -91,21 +95,22 @@ public class PacienteServiceImpl implements PacienteService {
         return repo.findById(id).orElse(null);
     }
 
+    @Override
+    public Paciente findEntityById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
+    }
+
     private PacienteResponseDTO mapToDTO(Paciente p) {
         PacienteResponseDTO dto = new PacienteResponseDTO();
         dto.setId(p.getId());
-        dto.setDueñoId(p.getDueño().getId());
+        // p.getDueño() existe porque tu entidad usa 'dueño'
+        dto.setDuenoId(p.getDueño() != null ? p.getDueño().getId() : null);
+        dto.setDuenoNombre(p.getDueño() != null ? p.getDueño().getFullName() : null);
         dto.setNombre(p.getNombre());
         dto.setEspecie(p.getEspecie());
         dto.setRaza(p.getRaza());
         dto.setEdad(p.getEdad());
-        dto.setDueñoNombre(p.getDueño().getFullName());
         return dto;
     }
-
-    @Override
-    public Paciente findEntityById(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
-    }
-
 }

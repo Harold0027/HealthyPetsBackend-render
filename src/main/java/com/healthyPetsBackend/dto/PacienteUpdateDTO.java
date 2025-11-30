@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PacienteUpdateDTO {
-    private Long dueñoId;
+    private Long duenoId;
     private String nombre;
     private String especie;
     private String raza;
