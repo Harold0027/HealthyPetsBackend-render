@@ -20,5 +20,4 @@ public interface VeterinarioService {
     void delete(Long id);
 
     Veterinario findEntityById(Long id);
-
 }

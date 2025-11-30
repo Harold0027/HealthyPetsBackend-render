@@ -9,4 +9,6 @@ public class VeterinarioUpdateDTO {
     private String correo;
     private String telefono;
     private String direccion;
+    private String informacion;
+    private String imagenUrl;
 }

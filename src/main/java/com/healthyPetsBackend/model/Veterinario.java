@@ -22,4 +22,11 @@ public class Veterinario {
     private String telefono;
 
     private String direccion;
+
+    // Nuevos campos
+    @Column(length = 1000)
+    private String informacion;
+
+    private String imagenUrl;
 }
+
