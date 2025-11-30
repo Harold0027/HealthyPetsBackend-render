@@ -17,11 +17,8 @@ public class Cita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long paciente;
-    private Long mascota_id;
-
-    @Column(name = "veterinario_id")
-    private Long veterinarioId;
+    private Long paciente;       // id del paciente (mascota)
+    private Long veterinarioId;  // id del veterinario
 
     private LocalDate fecha;
     private LocalTime hora;

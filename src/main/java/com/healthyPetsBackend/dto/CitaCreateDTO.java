@@ -6,12 +6,9 @@ import java.time.LocalTime;
 
 @Data
 public class CitaCreateDTO {
-    private Long paciente;
-    private Long mascota_id;
-    private Long veterinario_id;
-
-    private LocalDate fecha; // "2025-03-01"
-    private LocalTime hora;  // "15:00"
-
+    private Long pacienteId;
+    private Long veterinarioId;
+    private LocalDate fecha;
+    private LocalTime hora;
     private String motivo;
 }
