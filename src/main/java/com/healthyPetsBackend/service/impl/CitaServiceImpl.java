@@ -4,10 +4,8 @@ import com.healthyPetsBackend.dto.CitaCreateDTO;
 import com.healthyPetsBackend.dto.CitaResponseDTO;
 import com.healthyPetsBackend.model.Cita;
 import com.healthyPetsBackend.model.Paciente;
-import com.healthyPetsBackend.model.Veterinario;
 import com.healthyPetsBackend.repository.CitaRepository;
 import com.healthyPetsBackend.repository.PacienteRepository;
-import com.healthyPetsBackend.repository.VeterinarioRepository;
 import com.healthyPetsBackend.service.CitaService;
 import org.springframework.stereotype.Service;
 
@@ -19,41 +17,34 @@ public class CitaServiceImpl implements CitaService {
 
     private final CitaRepository citaRepository;
     private final PacienteRepository pacienteRepository;
-    private final VeterinarioRepository veterinarioRepository;
 
     public CitaServiceImpl(CitaRepository citaRepository,
-                           PacienteRepository pacienteRepository,
-                           VeterinarioRepository veterinarioRepository) {
+                           PacienteRepository pacienteRepository) {
         this.citaRepository = citaRepository;
         this.pacienteRepository = pacienteRepository;
-        this.veterinarioRepository = veterinarioRepository;
     }
 
     @Override
     public CitaResponseDTO create(CitaCreateDTO dto) {
 
-        // Validar disponibilidad del veterinario
-        if (citaRepository.existsByVeterinarioIdAndFechaAndHora(dto.getVeterinarioId(), dto.getFecha(), dto.getHora())) {
-            throw new RuntimeException("El veterinario ya tiene una cita asignada a esa hora.");
-        }
-
         // Validar paciente
         Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
 
-        // Validar veterinario
-        Veterinario vet = veterinarioRepository.findById(dto.getVeterinarioId())
-                .orElseThrow(() -> new RuntimeException("Veterinario no encontrado"));
+        // Validar que no exista otra cita para el paciente en la misma fecha y hora
+        if (citaRepository.existsByPacienteAndFechaAndHora(dto.getPacienteId(), dto.getFecha(), dto.getHora())) {
+            throw new RuntimeException("El paciente ya tiene una cita en esa fecha y hora.");
+        }
 
         // Crear cita
         Cita cita = new Cita();
         cita.setPaciente(paciente.getId());
-        cita.setVeterinarioId(vet.getId());
         cita.setFecha(dto.getFecha());
         cita.setHora(dto.getHora());
         cita.setMotivo(dto.getMotivo());
 
         Cita saved = citaRepository.save(cita);
+
         return mapToResponse(saved);
     }
 
@@ -85,7 +76,6 @@ public class CitaServiceImpl implements CitaService {
         dto.setHora(cita.getHora());
         dto.setMotivo(cita.getMotivo());
         dto.setPacienteId(cita.getPaciente());
-        dto.setVeterinarioId(cita.getVeterinarioId());
 
         // Obtener paciente y dueño
         Paciente paciente = pacienteRepository.findById(cita.getPaciente()).orElse(null);
@@ -96,10 +86,6 @@ public class CitaServiceImpl implements CitaService {
             dto.setPacienteNombre("Desconocido");
             dto.setDuenoNombre("Desconocido");
         }
-
-        // Obtener veterinario
-        Veterinario vet = veterinarioRepository.findById(cita.getVeterinarioId()).orElse(null);
-        dto.setVeterinarioNombre(vet != null ? vet.getNombre() : "Desconocido");
 
         return dto;
     }

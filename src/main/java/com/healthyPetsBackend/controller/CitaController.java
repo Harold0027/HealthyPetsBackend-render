@@ -37,4 +37,3 @@ public class CitaController {
         citaService.delete(id);
     }
 }
- 

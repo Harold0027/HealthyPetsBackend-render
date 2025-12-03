@@ -10,8 +10,6 @@ public class CitaResponseDTO {
     private Long pacienteId;
     private String pacienteNombre;
     private String duenoNombre;
-    private Long veterinarioId;
-    private String veterinarioNombre;
     private LocalDate fecha;
     private LocalTime hora;
     private String motivo;

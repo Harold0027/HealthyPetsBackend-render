@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public interface CitaRepository extends JpaRepository<Cita, Long> {
-    boolean existsByVeterinarioIdAndFechaAndHora(Long veterinarioId, LocalDate fecha, LocalTime hora);
+    boolean existsByPacienteAndFechaAndHora(Long pacienteId, LocalDate fecha, LocalTime hora);
 }

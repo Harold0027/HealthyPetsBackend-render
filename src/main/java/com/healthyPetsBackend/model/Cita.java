@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Data
 @Table(
     name = "citas",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"veterinario_id", "fecha", "hora"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"paciente", "fecha", "hora"})
 )
 public class Cita {
 
@@ -18,7 +18,6 @@ public class Cita {
     private Long id;
 
     private Long paciente;       // id del paciente (mascota)
-    private Long veterinarioId;  // id del veterinario
 
     private LocalDate fecha;
     private LocalTime hora;
